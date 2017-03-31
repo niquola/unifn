@@ -2,7 +2,9 @@
 
 A Clojure library designed to provide universal 
 functions interface, which is composable by meta-data
-into chains and workflows. Inspired by pedestal & onyx
+into chains and workflows. 
+
+Inspired by pedestal & onyx.
 
 ## Usage
 

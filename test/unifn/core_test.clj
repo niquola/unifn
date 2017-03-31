@@ -8,7 +8,6 @@
   [f arg]
   (assoc arg :var "value"))
 
-
 (defmethod sut/*apply-fn :test/transform
   [f arg]
   (assoc arg :var "value"))
