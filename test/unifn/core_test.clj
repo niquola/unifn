@@ -7,33 +7,28 @@
 
 (defmethod sut/*apply-fn :test/transform
   [f arg]
-  (assoc arg :var "value"))
+  {:var "value"})
 
 (defmethod sut/*apply-fn :test/response
   [f arg]
-  (assoc arg :response {:some "response"}))
+  {:response  {:some "response"}})
 
 (defmethod sut/*apply-fn :test/interceptor
   [f arg]
   (if (:intercept arg)
-    (merge arg {:response {:interecepted true}
-                :unifn/status :stop})
-    arg))
+    {:response {:interecepted true} :unifn/status :stop}
+    {}))
 
 (defmethod sut/*apply-fn :test/throwing
   [f arg]
   (throw (Exception. "ups")))
 
-;; (s/def :test/specified
-;;   (s/keys :req [:test/specific-key]))
+(s/def :test/specified
+  (s/keys :req [:test/specific-key]))
 
-;; (defmethod sut/*apply-fn :test/specified
-;;   [f arg]
-;;   (assoc arg :specfied true))
-
-;; (sut/apply-fn {:unifn/fn :test/specified} {})
-
-;; (s/def :test/unexisting map?)
+(defmethod sut/*apply-fn :test/specified
+  [f arg]
+  {:specified true})
 
 (deftest unifn-basic-test
   (matcho/match
@@ -72,4 +67,11 @@
                  {:request {} :intercept true})
    {:response {:interecepted true}}) 
 
-  )
+
+  (matcho/match
+   (sut/apply-fn {:unifn/fn :test/specified} {})
+   {:unifn/status :error})
+
+  (matcho/match
+   (sut/apply-fn {:unifn/fn :test/specified} {:test/specific-key 1})
+   {:specified true}))
