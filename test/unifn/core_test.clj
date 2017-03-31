@@ -63,5 +63,4 @@
                                {:unifn/fn :test/interceptor}
                                {:unifn/fn :test/response}]}
                  {:request {} :intercept true})
-   {:response {:interecepted true}})
-  )
+   {:response {:interecepted true}}))

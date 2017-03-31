@@ -2,7 +2,14 @@
   (:require [clojure.spec :as s]
             [clojure.stacktrace :as stacktrace]))
 
+(defn- deep-merge [& maps]
+  (if (every? map? maps)
+    (apply merge-with deep-merge maps)
+    (last maps)))
+
 (s/def :unifn/fn-def (s/keys :req [:unifn/id :unifn/fn]))
+
+(s/def :unifn/fn keyword?)
 
 (defmulti *apply-fn (fn [f arg] (:unifn/fn f)))
 
@@ -57,10 +64,6 @@
 ;;     arg))
 
 
-;; (defn- deep-merge [& maps]
-;;   (if (every? map? maps)
-;;     (apply merge-with deep-merge maps)
-;;     (last maps)))
 
 ;; (defn resolve-fn [f-def ctx]
 ;;   (when (and f-def ctx)
