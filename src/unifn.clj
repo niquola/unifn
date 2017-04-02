@@ -2,7 +2,7 @@
   (:require [clojure.spec :as s]
             [clojure.stacktrace :as stacktrace]))
 
-(defn- deep-merge [& maps]
+(defn deep-merge [& maps]
   (if (every? map? maps)
     (apply merge-with deep-merge maps)
     (last maps)))
@@ -19,6 +19,7 @@
    :unifn/message (str "Could not resolve " (:unifn/fn arg))})
 
 (declare *apply)
+
 (defn *apply-impl [{f-name :unifn/fn tracers :unifn/tracers :as arg}]
   (when tracers
     (let [trace-ev {:unifn/fn f-name :unifn/phase :enter}]
