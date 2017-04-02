@@ -1,4 +1,4 @@
-(ns unifn.core-test
+(ns unifn-test
   (:require [unifn :as u]
             [matcho.core :as matcho]
             [clojure.test :refer :all]
