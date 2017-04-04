@@ -2,11 +2,17 @@
   (:require [clojure.spec :as s]
             [clojure.stacktrace :as stacktrace]))
 
-(defn deep-merge [& maps]
-  (if (every? map? maps)
-    (apply merge-with deep-merge maps)
-    (last maps)))
-
+(defn deep-merge [a b]
+  (loop [[[k v :as i] & ks] b
+         acc a]
+    (if (nil? i)
+      acc
+      (let [av (get a k)]
+        (if (= v av)
+          (recur ks acc)
+          (recur ks (if (and (map? v) (map? av))
+                      (assoc acc k (deep-merge av v))
+                      (assoc acc k v))))))))
 
 (defmulti *fn (fn [arg] (:unifn/fn arg)))
 
