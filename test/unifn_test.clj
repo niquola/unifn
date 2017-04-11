@@ -18,6 +18,10 @@
   (when (:intercept arg)
     {:response {:interecepted true} ::u/status :stop}))
 
+(defmethod u/*fn :test/catch
+  [arg]
+  {:catched true})
+
 (defmethod u/*fn :test/throwing
   [arg]
   (throw (Exception. "ups")))
@@ -63,6 +67,15 @@
                 {::u/fn :test/response}]
                  {:request {} :intercept true})
    {:response {:interecepted true}}) 
+
+  (matcho/match 
+   (u/*apply [{::u/fn :test/interceptor}
+              {::u/fn :test/response}
+              {::u/fn :test/catch ::u/intercept :all}
+              {::u/fn :test/response}]
+              {:intercept true})
+   {:response {:interecepted true}
+    :catched true})
 
   (matcho/match
    (u/*apply {::u/fn :test/specified} {})
