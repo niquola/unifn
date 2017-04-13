@@ -16,6 +16,7 @@ general - a workflow
 
 ```
 ->[fn]-event->[fn]-event->[fn]
+
 ```
 
 Ring uses functions decoration to build pipeline, but it has some drawbacks
@@ -35,6 +36,7 @@ This functions could be composed into pipeline:
 
 ```
 input => f =event=> f =event=> output
+
 ```
 
 Pipeline or in general workflow described by data. 
@@ -42,6 +44,7 @@ Each function has unique key and some configuration data, wich could modify
 function behavior:
 
 
+```clj
 (defmethod unifn/*fn
    :my/step1
    [{cfg :my.step1/config ....}]
@@ -57,10 +60,12 @@ function behavior:
             :my.step1/config {...}}
            {::u/fn :my/step2
             :my.step2/config {...}}]})
+```
 
 
 Each message/argument has some meta attributes
 
+```clj
 ::u/id - configured action id
 ::u/type = equals to ::u/fn  - type of event
 ::u/ts - timestamp
@@ -71,6 +76,7 @@ arg could have spcial keys
 
 { tracer-fn [ev arg] }
 
+```
 
 We use one function interface
 
@@ -78,7 +84,7 @@ function get one hash-map argument with all context
 and returns hash-map which will be merged into original argument and passed
 downstream
 
-```
+``` clj
 (defmethod unifn/ufn 
   :my/key
   [arg] {:patch "patch"})
@@ -89,14 +95,13 @@ downstream
               :some-config {}} 
              {:a 1}) 
 
-=> {:a 1 :patch "patch" 
+;;=> 
+   {:a 1 :patch "patch" 
     :unifn/event module.module.action or fn/key by default
     :unifn/id "some-id"
     
     :unifn/pipe ? like in pedestal
 
-    or?? config
-    :unifn/meta {:some-config {}}
     :my/key {:some-config {}}}
 
 (unifn/apply [{:unifn/fn :uniq/fn} {:unifn/fn :other/fn}] {:a 1})
@@ -155,6 +160,7 @@ You could build pipeline of functions using :unifn/fn :unifn/pipe
 ```
 
 
+```clj
 {::u/id :my.rest.api
  ::u/tracer  fn 
  ::u/fn [{::u/fn :http/in ::u/tags #{:http.request.start} ::u/to :http/request}
@@ -170,12 +176,13 @@ You could build pipeline of functions using :unifn/fn :unifn/pipe
           ::u/tags #{:http.request.end} 
           ::u/from :http/request
           ::u/subs [...]}]}
+```
 
 
 To stop/intercept pipeline you function should return :unifn/status :error or :stop:
 
 
-```
+```clj
 (defmethod unifn/ufn 
   :test/interceptor
   [f arg]
