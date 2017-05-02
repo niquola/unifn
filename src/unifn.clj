@@ -65,5 +65,6 @@
                   (cond
                     (nil? f) arg
                     :else (recur fs (*apply f arg))))
-    :else (throw (Exception. "ups"))))
+    (var? f) (*apply (var-get f) arg)
+    :else (throw (Exception. (str "I don't know how to apply " (pr-str f))))))
 
