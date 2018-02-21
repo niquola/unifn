@@ -1,5 +1,7 @@
 # unifn
 
+[![Clojars Project](https://img.shields.io/clojars/v/unifn.svg)](https://clojars.org/unifn)
+
 A Clojure library designed to provide "universal"
 functions interface, which is composable by "meta"-data
 into pipelines and workflows. 
