@@ -1,4 +1,4 @@
-(defproject unifn "0.1.0-SNAPSHOT"
+(defproject unifn "0.1.0-RC3"
   :description "A Clojure library designed to provide universal functions interface, which is composable by meta-data into chains and workflows. "
   :url "https://github.com/niquola/unifn"
   :license {:name "Eclipse Public License"
