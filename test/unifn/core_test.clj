@@ -1,8 +1,8 @@
-(ns unifn-test
-  (:require [unifn :as u]
+(ns unifn.core-test
+  (:require [unifn.core :as u]
             [matcho.core :as matcho]
             [clojure.test :refer :all]
-            [clojure.spec :as s]))
+            [clojure.spec.alpha :as s]))
 
 
 (defmethod u/*fn :test/transform
@@ -50,7 +50,7 @@
   (matcho/match
    (u/*apply {::u/fn :test/throwing} {:some "payload" ::u/safe? true})
    {::u/status :error
-    ::u/stacktrace string?})
+    ::u/message string?})
 
 
   (matcho/match
