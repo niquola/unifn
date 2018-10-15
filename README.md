@@ -6,10 +6,10 @@ A Clojure library designed to provide "universal"
 functions interface, which is composable by "meta"-data
 into pipelines and workflows. 
 
-Inspired by pedestal, prizmatic libraries & onyx.
+Inspired by pedestal, prismatic libraries & onyx.
 
 
-## Monivation
+## Motivation
 
 Some pieces of code could be expressed 
 as a pipeline (for example middleware in ring etc) or in more 
@@ -22,12 +22,12 @@ general - a workflow
 ```
 
 Ring uses functions decoration to build pipeline, but it has some drawbacks
-- i.e. async interfaces, introspectoin, stacktraces etc
+- i.e. async interfaces, introspection, stacktraces etc
 
 Let say we have defined interface for function:
 
 function passed only one parameter and it's hash-map - universal argument
-function produce hash-map, wich will be merged into original argument and
+function produce hash-map, which will be merged into original argument and
 passed downstream.
 
 ```
@@ -42,7 +42,7 @@ input => f =event=> f =event=> output
 ```
 
 Pipeline or in general workflow described by data. 
-Each function has unique key and some configuration data, wich could modify
+Each function has unique key and some configuration data, which could modify
 function behavior:
 
 
@@ -127,7 +127,7 @@ downstream
 ## Usage
 
 
-To definy unifunction you have to
+To define unifunction you have to
 implement mulitmethod with your key `:my/transform`:
 
 ```
