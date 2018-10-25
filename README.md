@@ -72,7 +72,7 @@ Each message/argument has some meta attributes
 ::u/type = equals to ::u/fn  - type of event
 ::u/ts - timestamp
 
-arg could have spcial keys
+arg could have special keys
 
 ::u/tracers [tracer-fn]
 
@@ -87,7 +87,7 @@ and returns hash-map which will be merged into original argument and passed
 downstream
 
 ``` clj
-(defmethod unifn/ufn 
+(defmethod unifn/*fn 
   :my/key
   [arg] {:patch "patch"})
 
