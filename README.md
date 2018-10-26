@@ -6,10 +6,10 @@ A Clojure library designed to provide "universal"
 functions interface, which is composable by "meta"-data
 into pipelines and workflows. 
 
-Inspired by pedestal, prizmatic libraries & onyx.
+Inspired by pedestal, prismatic libraries & onyx.
 
 
-## Monivation
+## Motivation
 
 Some pieces of code could be expressed 
 as a pipeline (for example middleware in ring etc) or in more 
@@ -22,12 +22,12 @@ general - a workflow
 ```
 
 Ring uses functions decoration to build pipeline, but it has some drawbacks
-- i.e. async interfaces, introspectoin, stacktraces etc
+- i.e. async interfaces, introspection, stacktraces etc
 
 Let say we have defined interface for function:
 
 function passed only one parameter and it's hash-map - universal argument
-function produce hash-map, wich will be merged into original argument and
+function produce hash-map, which will be merged into original argument and
 passed downstream.
 
 ```
@@ -42,7 +42,7 @@ input => f =event=> f =event=> output
 ```
 
 Pipeline or in general workflow described by data. 
-Each function has unique key and some configuration data, wich could modify
+Each function has unique key and some configuration data, which could modify
 function behavior:
 
 
@@ -72,7 +72,7 @@ Each message/argument has some meta attributes
 ::u/type = equals to ::u/fn  - type of event
 ::u/ts - timestamp
 
-arg could have spcial keys
+arg could have special keys
 
 ::u/tracers [tracer-fn]
 
@@ -87,7 +87,7 @@ and returns hash-map which will be merged into original argument and passed
 downstream
 
 ``` clj
-(defmethod unifn/ufn 
+(defmethod unifn/*fn 
   :my/key
   [arg] {:patch "patch"})
 
@@ -127,23 +127,22 @@ downstream
 ## Usage
 
 
-To definy unifunction you have to
+To define unifunction you have to
 implement mulitmethod with your key `:my/transform`:
 
 ```
-
-(defmethod unifn/*apply-fn :my/transform
-  [f arg]
+(defmethod u/*fn :my/transform
+  [arg]
   (assoc arg :var "value"))
 ```
 
 
-You could call your function by `(unifn/apply f arg)`
+You could call your function by `(unifn/*apply f arg)`
 
 
 ```
-(unifn/apply {:unifn/fn :my/transform} {}) 
-=>  {:var "value"}
+(unifn/*apply {::unifn/fn :my/transform} {:foo "bar"})
+=> {:foo bar, :unifn.core/fn :my/transform, :var value}
 
 ```
 
@@ -161,6 +160,14 @@ You could build pipeline of functions using :unifn/fn :unifn/pipe
               {:unifn/fn :test/response}]}
 ```
 
+Simple example successively applying functions:
+```
+(unifn/*apply [{::unifn/fn :test/transform}
+               {::unifn/fn :test/interceptor}
+               {::unifn/fn :test/response}]
+               {:request {}})
+
+```
 
 ```clj
 {::u/id :my.rest.api
@@ -185,11 +192,11 @@ To stop/intercept pipeline you function should return :unifn/status :error or :s
 
 
 ```clj
-(defmethod unifn/ufn 
+(defmethod unifn/*fn 
   :test/interceptor
-  [f arg]
+  [arg]
   (when ...
-    {:response {:interecepted true} :unifn/status :stop}))
+    {:response {:interecepted true} ::unifn/status :stop}))
 ```
 
 ## License
